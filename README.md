@@ -26,7 +26,7 @@ Designed for **speed, simplicity, and privacy** — all inside a clean, responsi
 |------------------|----------|
 | **HTML** | Structure and layout of the web app |
 | **CSS** | Styling and responsive design |
-| **JavaScript (Vanilla)** | App logic and Firebase integration |
+| **JavaScript** | App logic and Firebase integration |
 | **Firebase** | Authentication, Firestore database, and Storage |
 ---
 
