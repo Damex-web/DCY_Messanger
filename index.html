@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Chat App :DCY</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
+
+    <!-- PWA and Favicon -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="/favicon_io/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="DCYM" />
+    <link rel="manifest" href="/favicon_io/site.webmanifest" />
+    <meta name="theme-color" content="#0B0E17">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png"> 
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon_io/favicon-96x96.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg" />
+    
+    <!-- iOS Splash Screens -->
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px)">
+    <link rel="apple-touch-startup-image" href="favicon_io/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px)">
+
+    <!-- Social Media Preview (Open Graph + Twitter Card) -->
+    <!-- <meta property="og:title" content="DCY Messenger">
+    <meta property="og:description" content="Chat instantly and privately with friends on DCYM — modern, fast, and secure.">
+    <meta property="og:image" content="https://yourdomain.com/favicon_io/og-banner.png">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DCYM"> -->
+    
+    <meta property="og:title" content="DCY Messenger">
+<meta property="og:description" content="Fast. Private. Modern.">
+<meta property="og:image" content="favicon_io/Favicon/og-banner.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://127.0.0.1:5500/index.html">
+
+
+
+    <!-- Twitter (X) Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DC You Messenger">
+    <meta name="twitter:description" content="Chat instantly and privately with friends on DCYM — modern, fast, and secure.">
+    <meta name="twitter:image" content="https://yourdomain.com/favicon_io/og-banner.png">
+
+</head>
+<body>
+
+
+    <!-- ================= SIGNUP FORM ================= -->
+    <div class="auth-card" id="signup-form">
+
+        <div>
+            <img src="/signuphero.png" alt="hero" class="hero">
+        </div>
+
+        <div>
+            <h2>Sign Up</h2>
+            <form action="" onsubmit="event.preventDefault(); saveProfile();">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                <input type="file" id="profile-pic" accept="image/*" required>
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <textarea name="about" id="about" placeholder="About..." required></textarea>
+                <button type="button" onclick="saveProfile()"> Sign Up </button>
+                <p>Already have an account? <a onclick="showLogin()">Login</a></p>
+            </form>
+        </div>
+        
+    </div>
+
+    <!-- ================= LOGIN FORM ================= -->
+    <div class="auth-card" id="login-form">
+
+        <div>
+            <img src="/loginhero.png" alt="hero" class="hero">
+        </div>
+
+        <div>
+            <h2>Login</h2>
+            <form action="" onsubmit="event.preventDefault(); login();" >
+                <input type="text" id="login-user-email" placeholder="Username or Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="button" onclick="login()" > Login </button>
+                <p>Don't have an account? <a onclick="showSignup()">Sign Up</a></p>
+            </form>
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= CHAT UI ================= -->
+    <section class="chat-cell" id="chat-cell" role="application" aria-label="chat application UI">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar" id="sidebar" aria-label="conversations list">
+
+            <div class="sidebar-header">
+
+                <!-- ================= CHAT MENU ================= -->
+                <div class="menu">
+
+                    <h1>chat</h1>
+                    <button id="profile-btn">
+                        <img src="avatar.png" id="profile-pic-btn" aria-hidden="true">
+                    </button>
+                    <div id="overlay"></div>
+
+                </div>
+
+
+                <!-- ================= USER PROFILE ================= -->
+                <div id="my-profile">
+
+                    <div class="profile-pics">
+                        <img src="avatar.png" id="profile-pics" alt="" aria-hidden="true">
+                        <input type="file" id="change-pics" accept="image/*" style="display: none;">  
+                    </div>
+
+                    <div class="profile-name">
+                        <h2 id="profile-name"></h2>
+                    </div>
+
+                    <div class="profile-status">
+                        <h4 id="profile-status"></h4>
+                    </div>
+
+                    <div class="profile-about">
+                        <p class="p">About</p>
+                        <p id="profile-about" contenteditable="true"></p>
+                    </div>
+
+                    <div class="profile-contact">
+                        <p class="p">Phone number</p>
+                        <p id="profile-phone" contenteditable="true"></p>
+                    </div>
+
+                    <div class="logout">
+                        <button class="danger" id="logout-btn" onclick="logout()">Log Out</button>
+                        <small>Chat history on this computer will be cleared when you log out.</small>
+                    </div>
+
+                </div>
+
+
+                <!-- ================= SEARCH USER ================= -->
+                <div class="search">
+                    <input type="text" id="search-input" placeholder="search conversations" aria-label="search conversations">
+                </div>
+
+            </div>
+
+
+            <!-- ================= USER LIST ================= -->
+            <div class="user-list" id="user-list">
+                <div class="user-item" id="user-item" tabindex="0">
+                    <div class="avatar" aria-hidden="true">
+                        <img src="avatar.png" id="profile-img" alt="profile picture" aria-hidden="true">
+                    </div>
+                    <div class="user-details">
+                            <h1 id="name"></h1>
+                            <div class="last-message" id="last-message"></div>
+                    </div>
+                    <div class="time" id="time"></div>
+                </div>
+            </div>
+            
+        </aside>
+
+        
+
+        <!-- ================= MAIN CHAT PANNEL ================= -->
+        <main class="chat-panel" id="chat-panel" aria-label="active conversation">
+
+            <!-- ================= USER CHAT HEADER ================= -->
+            <header class="chat-header" id="chat-header">
+
+                <div class="avatar" aria-hidden="true">
+                    <img src="avatar.png" id="person-pic" alt="" aria-hidden="true">
+                </div>
+
+                <div class="item-details">
+                    <div class="name" id="person-name"></div>
+                    <div class="status" id="user-status"></div>
+                </div>
+
+                <div class="back">
+                    <button id="back-btn">🔙</button>
+                </div>
+
+            </header>
+
+
+            <!-- ================= USER MESSAGES ================= -->
+            <section class="chat-messages" id="chat-messages" aria-label="messages" aria-live="polite" aria-relevant="additions"></section>
+
+
+            <!-- ================= INPUT MESSAGE FIELD ================= -->
+            <form action="" class="input-bar" id="input-field" aria-label="send message" onsubmit="return false">
+
+
+                <!-- ================= EMOJIS ================= -->
+                <div class="emojis">
+
+                    <button class="emoji toggle">😀</button>
+                    <div class="emoji-list" id="emoji-list" aria-label="emoji selector">
+                        <button class="emoji">😀</button>
+                        <button class="emoji">😁</button>
+                        <button class="emoji">😂</button>
+                        <button class="emoji">😃</button>
+                        <button class="emoji">😄</button>
+                        <button class="emoji">😅</button>
+                        <button class="emoji">😆</button>
+                        <button class="emoji">😇</button>
+                        <button class="emoji">😈</button>
+                        <button class="emoji">😉</button>
+                        <button class="emoji">😊</button>
+                        <button class="emoji">😋</button>
+                        <button class="emoji">😌</button>
+                        <button class="emoji">😍</button>
+                        <button class="emoji">😎</button>
+                        <button class="emoji">😏</button>
+                        <button class="emoji">😐</button>
+                        <button class="emoji">😑</button>
+                        <button class="emoji">😒</button>
+                        <button class="emoji">😓</button>
+                        <button class="emoji">😔</button>
+                        <button class="emoji">😕</button>
+                        <button class="emoji">😖</button>
+                        <button class="emoji">😗</button>
+                        <button class="emoji">😘</button>
+                        <button class="emoji">😙</button>
+                        <button class="emoji">😚</button>
+                        <button class="emoji">😛</button>
+                        <button class="emoji">😜</button>
+                        <button class="emoji">😝</button>
+                        <button class="emoji">😞</button>
+                        <button class="emoji">😟</button>
+                        <button class="emoji">😠</button>
+                        <button class="emoji">😡</button>
+                        <button class="emoji">😢</button>
+                        <button class="emoji">😣</button>
+                        <button class="emoji">😤</button>
+                        <button class="emoji">😥</button>
+                        <button class="emoji">😦</button>
+                        <button class="emoji">😧</button>
+                        <button class="emoji">😨</button>
+                        <button class="emoji">😩</button>
+                        <button class="emoji">😪</button>
+                        <button class="emoji">😫</button>
+                        <button class="emoji">😬</button>
+                        <button class="emoji">😭</button>
+                        <button class="emoji">😮</button>
+                        <button class="emoji">😯</button>
+                        <button class="emoji">😰</button>
+                        <button class="emoji">😱</button>
+                        <button class="emoji">😲</button>
+                        <button class="emoji">😳</button>
+                        <button class="emoji">😴</button>
+                        <button class="emoji">😵</button>
+                        <button class="emoji">😶</button>
+                        <button class="emoji">😷</button>
+                        <button class="emoji">😸</button>
+                        <button class="emoji">😹</button>
+                        <button class="emoji">😺</button>
+                        <button class="emoji">😻</button>
+                        <button class="emoji">😼</button>
+                        <button class="emoji">😽</button>
+                        <button class="emoji">😾</button>
+                        <button class="emoji">😿</button>
+                        <button class="emoji">🙀</button>
+                        <button class="emoji">🙁</button>
+                        <button class="emoji">🙂</button>
+                        <button class="emoji">🙃</button>
+                        <button class="emoji">🙄</button>
+                        <button class="emoji">🙅</button>
+                        <button class="emoji">🙆</button>
+                        <button class="emoji">🙇</button>
+                        <button class="emoji">🙈</button>
+                        <button class="emoji">🙉</button>
+                        <button class="emoji">🙊</button>
+                        <button class="emoji">🙋</button>
+                        <button class="emoji">🙌</button>
+                        <button class="emoji">🙍</button>
+                        <button class="emoji">🙎</button>
+                        <button class="emoji">🙏</button>
+                        <button class="emoji">🤌</button>
+                        <button class="emoji">🤍</button>
+                        <button class="emoji">🤎</button>
+                        <button class="emoji">🤏</button>
+                        <button class="emoji">🤐</button>
+                        <button class="emoji">🤑</button>
+                        <button class="emoji">🤒</button>
+                        <button class="emoji">🤓</button>
+                        <button class="emoji">🤔</button>
+                        <button class="emoji">🤕</button>
+                        <button class="emoji">🤖</button>
+                        <button class="emoji">🤗</button>
+                        <button class="emoji">🤘</button>
+                        <button class="emoji">🤙</button>
+                        <button class="emoji">🤚</button>
+                        <button class="emoji">🤛</button>
+                        <button class="emoji">🤜</button>
+                        <button class="emoji">🤝</button>
+                        <button class="emoji">🤞</button>
+                        <button class="emoji">🤟</button>
+                        <button class="emoji">🤠</button>
+                        <button class="emoji">🤡</button>
+                        <button class="emoji">🤢</button>
+                        <button class="emoji">🤣</button>
+                        <button class="emoji">🤤</button>
+                        <button class="emoji">🤥</button>
+                        <button class="emoji">🤦</button>
+                        <button class="emoji">🤧</button>
+                        <button class="emoji">🤨</button>
+                        <button class="emoji">🤩</button>
+                        <button class="emoji">🤪</button>
+                        <button class="emoji">🤫</button>
+                        <button class="emoji">🤬</button>
+                        <button class="emoji">🤭</button>
+                        <button class="emoji">🤮</button>
+                        <button class="emoji">🤯</button>
+                        <button class="emoji">🤰</button>
+                        <button class="emoji">🤱</button>
+                        <button class="emoji">🤲</button>
+                        <button class="emoji">🤳</button>
+                        <button class="emoji">🤴</button>
+                        <button class="emoji">🤵</button>
+                        <button class="emoji">🤶</button>
+                        <button class="emoji">🤷</button>
+                        <button class="emoji">🤸</button>
+                        <button class="emoji">🤹</button>
+                        <button class="emoji">🤺</button>
+                        <button class="emoji">🤻</button>
+                        <button class="emoji">🤼</button>
+                        <button class="emoji">🤽</button>
+                        <button class="emoji">🤾</button>
+                        <button class="emoji">🤿</button>
+                        <button class="emoji">🥀</button>
+                        <button class="emoji">🥁</button>
+                        <button class="emoji">🥂</button>
+                        <button class="emoji">🥃</button>
+                        <button class="emoji">🥄</button>
+                        <button class="emoji">🥅</button>
+                        <button class="emoji">🥆</button>
+                        <button class="emoji">🥇</button>
+                        <button class="emoji">🥈</button>
+                        <button class="emoji">🥉</button>
+                        <button class="emoji">🥊</button>
+                        <button class="emoji">🥋</button>
+                        <button class="emoji">🥌</button>
+                        <button class="emoji">🥍</button>
+                        <button class="emoji">🥎</button>
+                        <button class="emoji">🥏</button>
+                        <button class="emoji">🥐</button>
+                        <button class="emoji">🥑</button>
+                        <button class="emoji">🥒</button>
+                        <button class="emoji">🥓</button>
+                        <button class="emoji">🥔</button>
+                        <button class="emoji">🥕</button>
+                        <button class="emoji">🥖</button>
+                        <button class="emoji">🥗</button>
+                        <button class="emoji">🥘</button>
+                        <button class="emoji">🥙</button>
+                        <button class="emoji">🥚</button>
+                        <button class="emoji">🥛</button>
+                        <button class="emoji">🥜</button>
+                        <button class="emoji">🥝</button>
+                        <button class="emoji">🥞</button>
+                        <button class="emoji">🥟</button>
+                        <button class="emoji">🥠</button>
+                        <button class="emoji">🥡</button>
+                        <button class="emoji">🥢</button>
+                        <button class="emoji">🥣</button>
+                        <button class="emoji">🥤</button>
+                        <button class="emoji">🥥</button>
+                        <button class="emoji">🥦</button>
+                        <button class="emoji">🥧</button>
+                        <button class="emoji">🥨</button>
+                        <button class="emoji">🥩</button>
+                        <button class="emoji">🥪</button>
+                        <button class="emoji">🥫</button>
+                        <button class="emoji">🥬</button>
+                        <button class="emoji">🥭</button>
+                        <button class="emoji">🥮</button>
+                        <button class="emoji">🥯</button>
+                        <button class="emoji">🥰</button>
+                        <button class="emoji">🥱</button>
+                        <button class="emoji">🥲</button>
+                        <button class="emoji">🥳</button>
+                        <button class="emoji">🥴</button>
+                        <button class="emoji">🥵</button>
+                        <button class="emoji">🥶</button>
+                        <button class="emoji">🥷</button>
+                        <button class="emoji">🥸</button>
+                        <button class="emoji">🥹</button>
+                        <button class="emoji">🥺</button>
+                        <button class="emoji">🥻</button>
+                        <button class="emoji">🥼</button>
+                        <button class="emoji">🥽</button>
+                        <button class="emoji">🥾</button>
+                        <button class="emoji">🥿</button>
+                        <button class="emoji">🦀</button>
+                        <button class="emoji">🦁</button>
+                        <button class="emoji">🦂</button>
+                        <button class="emoji">🦃</button>
+                        <button class="emoji">🦄</button>
+                        <button class="emoji">🦅</button>
+                        <button class="emoji">🦆</button>
+                        <button class="emoji">🦇</button>
+                        <button class="emoji">🦈</button>
+                        <button class="emoji">🦉</button>
+                        <button class="emoji">🦊</button>
+                        <button class="emoji">🦋</button>
+                        <button class="emoji">🦌</button>
+                        <button class="emoji">🦍</button>
+                        <button class="emoji">🦎</button>
+                        <button class="emoji">🦏</button>
+                        <button class="emoji">🦐</button>
+                        <button class="emoji">🦑</button>
+                        <button class="emoji">🦒</button>
+                        <button class="emoji">🦓</button>
+                        <button class="emoji">🦔</button>
+                        <button class="emoji">🦕</button>
+                        <button class="emoji">🦖</button>
+                        <button class="emoji">🦗</button>
+                        <button class="emoji">🦘</button>
+                        <button class="emoji">🦙</button>
+                        <button class="emoji">🦚</button>
+                        <button class="emoji">🦛</button>
+                        <button class="emoji">🦜</button>
+                        <button class="emoji">🦝</button>
+                        <button class="emoji">🦞</button>
+                        <button class="emoji">🦟</button>
+                        <button class="emoji">🦠</button>
+                        <button class="emoji">🦡</button>
+                        <button class="emoji">🦢</button>
+                        <button class="emoji">🦣</button>
+                        <button class="emoji">🦤</button>
+                        <button class="emoji">🦥</button>
+                        <button class="emoji">🦦</button>
+                        <button class="emoji">🦧</button>
+                        <button class="emoji">🦨</button>
+                        <button class="emoji">🦩</button>
+                        <button class="emoji">🦪</button>
+                        <button class="emoji">🦫</button>
+                        <button class="emoji">🦬</button>
+                        <button class="emoji">🦭</button>
+                        <button class="emoji">🦮</button>
+                        <button class="emoji">🦯</button>
+                        <button class="emoji">🦰</button>
+                        <button class="emoji">🦱</button>
+                        <button class="emoji">🦲</button>
+                        <button class="emoji">🦳</button>
+                        <button class="emoji">🦴</button>
+                        <button class="emoji">🦵</button>
+                        <button class="emoji">🦶</button>
+                        <button class="emoji">🦷</button>
+                        <button class="emoji">🦸</button>
+                        <button class="emoji">🦹</button>
+                        <button class="emoji">🦺</button>
+                        <button class="emoji">🦻</button>
+                        <button class="emoji">🦼</button>
+                        <button class="emoji">🦽</button>
+                        <button class="emoji">🦾</button>
+                        <button class="emoji">🦿</button>
+                        <button class="emoji">🧀</button>
+                        <button class="emoji">🧁</button>
+                        <button class="emoji">🧂</button>
+                        <button class="emoji">🧃</button>
+                        <button class="emoji">🧄</button>
+                        <button class="emoji">🧅</button>
+                        <button class="emoji">🧆</button>
+                        <button class="emoji">🧇</button>
+                        <button class="emoji">🧈</button>
+                        <button class="emoji">🧉</button>
+                        <button class="emoji">🧊</button>
+                        <button class="emoji">🧋</button>
+                        <button class="emoji">🧌</button>
+                        <button class="emoji">🧍</button>
+                        <button class="emoji">🧎</button>
+                        <button class="emoji">🧏</button>
+                        <button class="emoji">🧐</button>
+                        <button class="emoji">🧑</button>
+                        <button class="emoji">🧒</button>
+                        <button class="emoji">🧓</button>
+                        <button class="emoji">🧔</button>
+                        <button class="emoji">🧕</button>
+                        <button class="emoji">🧖</button>
+                        <button class="emoji">🧗</button>
+                        <button class="emoji">🧘</button>
+                        <button class="emoji">🧙</button>
+                        <button class="emoji">🧚</button>
+                        <button class="emoji">🧛</button>
+                        <button class="emoji">🧜</button>
+                        <button class="emoji">🧝</button>
+                        <button class="emoji">🧞</button>
+                        <button class="emoji">🧟</button>
+                        <button class="emoji">🧠</button>
+                        <button class="emoji">🧡</button>
+                        <button class="emoji">🧢</button>
+                        <button class="emoji">🧣</button>
+                        <button class="emoji">🧤</button>
+                        <button class="emoji">🧥</button>
+                        <button class="emoji">🧦</button>
+                        <button class="emoji">🧧</button>
+                        <button class="emoji">🙐</button>
+                        <button class="emoji">🙑</button>
+                        <button class="emoji">🙒</button>
+                        <button class="emoji">🙓</button>
+                        <button class="emoji">🙔</button>
+                        <button class="emoji">🙕</button>
+                        <button class="emoji">🙖</button>
+                        <button class="emoji">🙗</button>
+                        <button class="emoji">🙘</button>
+                        <button class="emoji">🙙</button>
+                        <button class="emoji">🙚</button>
+                        <button class="emoji">🙛</button>
+                        <button class="emoji">🙜</button>
+                        <button class="emoji">🙝</button>
+                        <button class="emoji">🙞</button>
+                        <button class="emoji">🙟</button>
+                        <button class="emoji">🙠</button>
+                        <button class="emoji">🙡</button>
+                        <button class="emoji">🙢</button>
+                        <button class="emoji">🙣</button>
+                        <button class="emoji">🙤</button>
+                        <button class="emoji">🙥</button>
+                        <button class="emoji">🙦</button>
+                        <button class="emoji">🙧</button>
+                        <button class="emoji">🙨</button>
+                        <button class="emoji">🙩</button>
+                        <button class="emoji">🙪</button>
+                        <button class="emoji">🙫</button>
+                        <button class="emoji">🙬</button>
+                        <button class="emoji">🙭</button>
+                        <button class="emoji">🙮</button>
+                        <button class="emoji">🙯</button>
+                        <button class="emoji">🙰</button>
+                        <button class="emoji">🙱</button>
+                        <button class="emoji">🙲</button>
+                        <button class="emoji">🙳</button>
+                        <button class="emoji">🙴</button>
+                        <button class="emoji">🙵</button>
+                        <button class="emoji">🙶</button>
+                        <button class="emoji">🙷</button>
+                        <button class="emoji">🙸</button>
+                        <button class="emoji">🙹</button>
+                        <button class="emoji">🙺</button>
+                        <button class="emoji">🙻</button>
+                        <button class="emoji">🙼</button>
+                        <button class="emoji">🙽</button>
+                        <button class="emoji">🙾</button>
+                        <button class="emoji">🙿</button>
+                        <button class="emoji">🚀</button>
+                        <button class="emoji">🚁</button>
+                        <button class="emoji">🚂</button>
+                        <button class="emoji">🚃</button>
+                        <button class="emoji">🚄</button>
+                        <button class="emoji">🚅</button>
+                        <button class="emoji">🚆</button>
+                        <button class="emoji">🚇</button>
+                        <button class="emoji">🚈</button>
+                        <button class="emoji">🚉</button>
+                        <button class="emoji">🚊</button>
+                        <button class="emoji">🚋</button>
+                        <button class="emoji">🚌</button>
+                        <button class="emoji">🚍</button>
+                        <button class="emoji">🚎</button>
+                        <button class="emoji">🚏</button>
+                        <button class="emoji">🚐</button>
+                        <button class="emoji">🚑</button>
+                        <button class="emoji">🚒</button>
+                        <button class="emoji">🚓</button>
+                        <button class="emoji">🚔</button>
+                        <button class="emoji">🚕</button>
+                        <button class="emoji">🚖</button>
+                        <button class="emoji">🚗</button>
+                        <button class="emoji">🚘</button>
+                        <button class="emoji">🚙</button>
+                        <button class="emoji">🚚</button>
+                        <button class="emoji">🚛</button>
+                        <button class="emoji">🚜</button>
+                        <button class="emoji">🚝</button>
+                        <button class="emoji">🚞</button>
+                        <button class="emoji">🚟</button>
+                        <button class="emoji">🚠</button>
+                        <button class="emoji">🚡</button>
+                        <button class="emoji">🚢</button>
+                        <button class="emoji">🚣</button>
+                        <button class="emoji">🚤</button>
+                        <button class="emoji">🚥</button>
+                        <button class="emoji">🚦</button>
+                        <button class="emoji">🚧</button>
+                        <button class="emoji">🚨</button>
+                        <button class="emoji">🚩</button>
+                        <button class="emoji">🚪</button>
+                        <button class="emoji">🚫</button>
+                        <button class="emoji">🚬</button>
+                        <button class="emoji">🚭</button>
+                        <button class="emoji">🚮</button>
+                        <button class="emoji">🚯</button>
+                        <button class="emoji">🚰</button>
+                        <button class="emoji">🚱</button>
+                        <button class="emoji">🚲</button>
+                        <button class="emoji">🚳</button>
+                        <button class="emoji">🚴</button>
+                        <button class="emoji">🚵</button>
+                        <button class="emoji">🚶</button>
+                        <button class="emoji">🚷</button>
+                        <button class="emoji">🚸</button>
+                        <button class="emoji">🚹</button>
+                        <button class="emoji">🚺</button>
+                        <button class="emoji">🚻</button>
+                        <button class="emoji">🚼</button>
+                        <button class="emoji">🚽</button>
+                        <button class="emoji">🚾</button>
+                        <button class="emoji">🚿</button>
+                        <button class="emoji">🛀</button>
+                        <button class="emoji">🛁</button>
+                        <button class="emoji">🛂</button>
+                        <button class="emoji">🛃</button>
+                        <button class="emoji">🛄</button>
+                        <button class="emoji">🛅</button>
+                        <button class="emoji">🛆</button>
+                        <button class="emoji">🛇</button>
+                        <button class="emoji">🛈</button>
+                        <button class="emoji">🛉</button>
+                        <button class="emoji">🛊</button>
+                        <button class="emoji">🛋</button>
+                        <button class="emoji">🛌</button>
+                        <button class="emoji">🛍</button>
+                        <button class="emoji">🛎</button>
+                        <button class="emoji">🛏</button>
+                        <button class="emoji">🛐</button>
+                        <button class="emoji">🛑</button>
+                        <button class="emoji">🛒</button>
+                        <button class="emoji">🛓</button>
+                        <button class="emoji">🛔</button>
+                        <button class="emoji">🛕</button>
+                        <button class="emoji">🛖</button>
+                        <button class="emoji">🛗</button>
+                        <button class="emoji">🛘</button>
+                        <button class="emoji">🛙</button>
+                        <button class="emoji">🛚</button>
+                        <button class="emoji">🛛</button>
+                        <button class="emoji">🛜</button>
+                        <button class="emoji">🛝</button>
+                        <button class="emoji">🛞</button>
+                        <button class="emoji">🛟</button>
+                        <button class="emoji">🛠</button>
+                        <button class="emoji">🛡</button>
+                        <button class="emoji">🛢</button>
+                        <button class="emoji">🛣</button>
+                        <button class="emoji">🛤</button>
+                        <button class="emoji">🛥</button>
+                        <button class="emoji">🛦</button>
+                        <button class="emoji">🛧</button>
+                        <button class="emoji">🛨</button>
+                        <button class="emoji">🛩</button>
+                        <button class="emoji">🛪</button>
+                        <button class="emoji">🛫</button>
+                        <button class="emoji">🛬</button>
+                        <button class="emoji">🛭</button>
+                        <button class="emoji">🛮</button>
+                        <button class="emoji">🛯</button>
+                        <button class="emoji">🛰</button>
+                        <button class="emoji">🛱</button>
+                        <button class="emoji">🛲</button>
+                        <button class="emoji">🛳</button>
+                        <button class="emoji">🛴</button>
+                        <button class="emoji">🛵</button>
+                        <button class="emoji">🛶</button>
+                        <button class="emoji">🛷</button>
+                        <button class="emoji">🛸</button>
+                        <button class="emoji">🛹</button>
+                        <button class="emoji">🛺</button>
+                        <button class="emoji">🛻</button>
+                        <button class="emoji">🛼</button>
+                        <button class="emoji">🛽</button>
+                        <button class="emoji">🛾</button>
+                        <button class="emoji">🛿</button>
+                        <button class="emoji">🜀</button>
+                        <button class="emoji">🜁</button>
+                        <button class="emoji">🜂</button>
+                        <button class="emoji">🜃</button>
+                        <button class="emoji">🜄</button>
+                        <button class="emoji">🜅</button>
+                        <button class="emoji">🜆</button>
+                        <button class="emoji">🜇</button>
+                        <button class="emoji">🜈</button>
+                        <button class="emoji">🜉</button>
+                        <button class="emoji">🜊</button>
+                        <button class="emoji">🜋</button>
+                        <button class="emoji">🜌</button>
+                        <button class="emoji">🜍</button>
+                        <button class="emoji">🜎</button>
+                        <button class="emoji">🜏</button>
+                        <button class="emoji">🜐</button>
+                        <button class="emoji">🜑</button>
+                        <button class="emoji">🜒</button>
+                        <button class="emoji">🜓</button>
+                        <button class="emoji">🜔</button>
+                        <button class="emoji">🜕</button>
+                        <button class="emoji">🜖</button>
+                        <button class="emoji">🜗</button>
+                        <button class="emoji">🜘</button>
+                        <button class="emoji">🜙</button>
+                        <button class="emoji">🜚</button>
+                        <button class="emoji">🜛</button>
+                        <button class="emoji">🜜</button>
+                        <button class="emoji">🜝</button>
+                        <button class="emoji">🜞</button>
+                        <button class="emoji">🜟</button>
+                        <button class="emoji">🜠</button>
+                        <button class="emoji">🜡</button>
+                        <button class="emoji">🜢</button>
+                        <button class="emoji">🜣</button>
+                        <button class="emoji">🜤</button>
+                        <button class="emoji">🜥</button>
+                        <button class="emoji">🜦</button>
+                        <button class="emoji">🜧</button>
+                        <button class="emoji">🜨</button>
+                        <button class="emoji">🜩</button>
+                        <button class="emoji">🜪</button>
+                        <button class="emoji">🜫</button>
+                        <button class="emoji">🜬</button>
+                        <button class="emoji">🜭</button>
+                        <button class="emoji">🜮</button>
+                        <button class="emoji">🜯</button>
+                        <button class="emoji">🜰</button>
+                        <button class="emoji">🜱</button>
+                        <button class="emoji">🜲</button>
+                        <button class="emoji">🜳</button>
+                        <button class="emoji">🜴</button>
+                        <button class="emoji">🜵</button>
+                        <button class="emoji">🜶</button>
+                        <button class="emoji">🜷</button>
+                        <button class="emoji">🜸</button>
+                        <button class="emoji">🜹</button>
+                        <button class="emoji">🜺</button>
+                        <button class="emoji">🜻</button>
+                        <button class="emoji">🜼</button>
+                        <button class="emoji">🜽</button>
+                        <button class="emoji">🜾</button>
+                        <button class="emoji">🜿</button>
+                        <button class="emoji">🝀</button>
+                        <button class="emoji">🝁</button>
+                        <button class="emoji">🝂</button>
+                        <button class="emoji">🝃</button>
+                        <button class="emoji">🝄</button>
+                        <button class="emoji">🝅</button>
+                        <button class="emoji">🝆</button>
+                        <button class="emoji">🝇</button>
+                        <button class="emoji">🝈</button>
+                        <button class="emoji">🝉</button>
+                        <button class="emoji">🝊</button>
+                        <button class="emoji">🝋</button>
+                        <button class="emoji">🝌</button>
+                        <button class="emoji">🝍</button>
+                        <button class="emoji">🝎</button>
+                        <button class="emoji">🝏</button>
+                        <button class="emoji">🝐</button>
+                        <button class="emoji">🝑</button>
+                        <button class="emoji">🝒</button>
+                        <button class="emoji">🝓</button>
+                        <button class="emoji">🝔</button>
+                        <button class="emoji">🝕</button>
+                        <button class="emoji">🝖</button>
+                        <button class="emoji">🝗</button>
+                        <button class="emoji">🝘</button>
+                        <button class="emoji">🝙</button>
+                        <button class="emoji">🝚</button>
+                        <button class="emoji">🝛</button>
+                        <button class="emoji">🝜</button>
+                        <button class="emoji">🝝</button>
+                        <button class="emoji">🝞</button>
+                        <button class="emoji">🝟</button>
+                        <button class="emoji">🝠</button>
+                        <button class="emoji">🝡</button>
+                        <button class="emoji">🝢</button>
+                        <button class="emoji">🝣</button>
+                        <button class="emoji">🝤</button>
+                        <button class="emoji">🝥</button>
+                        <button class="emoji">🝦</button>
+                        <button class="emoji">🝧</button>
+                        <button class="emoji">🝨</button>
+                        <button class="emoji">🝩</button>
+                        <button class="emoji">🝪</button>
+                        <button class="emoji">🝫</button>
+                        <button class="emoji">🝬</button>
+                        <button class="emoji">🝭</button>
+                        <button class="emoji">🝮</button>
+                        <button class="emoji">🝯</button>
+                        <button class="emoji">🝰</button>
+                        <button class="emoji">🝱</button>
+                        <button class="emoji">🝲</button>
+                        <button class="emoji">🝳</button>
+                        <button class="emoji">🝴</button>
+                        <button class="emoji">🝵</button>
+                        <button class="emoji">🝶</button>
+                        <button class="emoji">🝷</button>
+                        <button class="emoji">🝸</button>
+                        <button class="emoji">🝹</button>
+                        <button class="emoji">🝺</button>
+                        <button class="emoji">🝻</button>
+                        <button class="emoji">🝼</button>
+                        <button class="emoji">🝽</button>
+                        <button class="emoji">🝾</button>
+                        <button class="emoji">🝿</button>
+                        <button class="emoji">🞀</button>
+                        <button class="emoji">🞁</button>
+                        <button class="emoji">🞂</button>
+                        <button class="emoji">🞃</button>
+                        <button class="emoji">🞄</button>
+                        <button class="emoji">🞅</button>
+                        <button class="emoji">🞆</button>
+                        <button class="emoji">🞇</button>
+                        <button class="emoji">🞈</button>
+                        <button class="emoji">🞉</button>
+                        <button class="emoji">🞊</button>
+                        <button class="emoji">🞋</button>
+                        <button class="emoji">🞌</button>
+                        <button class="emoji">🞍</button>
+                        <button class="emoji">🞎</button>
+                        <button class="emoji">🞏</button>
+                        <button class="emoji">🞐</button>
+                        <button class="emoji">🞑</button>
+                        <button class="emoji">🞒</button>
+                        <button class="emoji">🞓</button>
+                        <button class="emoji">🞔</button>
+                        <button class="emoji">🞕</button>
+                        <button class="emoji">🞖</button>
+                        <button class="emoji">🞗</button>
+                        <button class="emoji">🞘</button>
+                        <button class="emoji">🞙</button>
+                        <button class="emoji">🞚</button>
+                        <button class="emoji">🞛</button>
+                        <button class="emoji">🞜</button>
+                        <button class="emoji">🞝</button>
+                        <button class="emoji">🞞</button>
+                        <button class="emoji">🞟</button>
+                        <button class="emoji">🞠</button>
+                        <button class="emoji">🞡</button>
+                        <button class="emoji">🞢</button>
+                        <button class="emoji">🞣</button>
+                        <button class="emoji">🞤</button>
+                        <button class="emoji">🞥</button>
+                        <button class="emoji">🞦</button>
+                        <button class="emoji">🞧</button>
+                        <button class="emoji">🞨</button>
+                        <button class="emoji">🞩</button>
+                        <button class="emoji">🞪</button>
+                        <button class="emoji">🞫</button>
+                        <button class="emoji">🞬</button>
+                        <button class="emoji">🞭</button>
+                        <button class="emoji">🞮</button>
+                        <button class="emoji">🞯</button>
+                        <button class="emoji">🞰</button>
+                        <button class="emoji">🞱</button>
+                        <button class="emoji">🞲</button>
+                        <button class="emoji">🞳</button>
+                        <button class="emoji">🞴</button>
+                        <button class="emoji">🞵</button>
+                        <button class="emoji">🞶</button>
+                        <button class="emoji">🞷</button>
+                        <button class="emoji">🞸</button>
+                        <button class="emoji">🞹</button>
+                        <button class="emoji">🞺</button>
+                        <button class="emoji">🞻</button>
+                        <button class="emoji">🞼</button>
+                        <button class="emoji">🞽</button>
+                        <button class="emoji">🞾</button>
+                        <button class="emoji">🞿</button>
+                        <button class="emoji">🟀</button>
+                        <button class="emoji">🟁</button>
+                        <button class="emoji">🟂</button>
+                        <button class="emoji">🟃</button>
+                        <button class="emoji">🟄</button>
+                        <button class="emoji">🟅</button>
+                        <button class="emoji">🟆</button>
+                        <button class="emoji">🟇</button>
+                        <button class="emoji">🟈</button>
+                        <button class="emoji">🟉</button>
+                        <button class="emoji">🟊</button>
+                        <button class="emoji">🟋</button>
+                        <button class="emoji">🟌</button>
+                        <button class="emoji">🟍</button>
+                        <button class="emoji">🟎</button>
+                        <button class="emoji">🟏</button>
+                        <button class="emoji">🟐</button>
+                        <button class="emoji">🟑</button>
+                        <button class="emoji">🟒</button>
+                        <button class="emoji">🟔</button>
+                        <button class="emoji">🟠</button>
+                        <button class="emoji">🟡</button>
+                        <button class="emoji">🟢</button>
+                        <button class="emoji">🟣</button>
+                        <button class="emoji">🟤</button>
+                        <button class="emoji">🟥</button>
+                        <button class="emoji">🟦</button>
+                        <button class="emoji">🟧</button>
+                        <button class="emoji">🟨</button>
+                        <button class="emoji">🟩</button>
+                        <button class="emoji">🟪</button>
+                        <button class="emoji">🟫</button>
+                        <button class="emoji">🟰</button>
+                        <button class="emoji">🠀</button>
+                        <button class="emoji">🠁</button>
+                        <button class="emoji">🠂</button>
+                        <button class="emoji">🠃</button>
+                        <button class="emoji">🠄</button>
+                        <button class="emoji">🠅</button>
+                        <button class="emoji">🠆</button>
+                        <button class="emoji">🠇</button>
+                        <button class="emoji">🠈</button>
+                        <button class="emoji">🠉</button>
+                        <button class="emoji">🠊</button>
+                        <button class="emoji">🠋</button>
+                        <button class="emoji">🠐</button>
+                        <button class="emoji">🠑</button>
+                        <button class="emoji">🠒</button>
+                        <button class="emoji">🠓</button>
+                        <button class="emoji">🠔</button>
+                        <button class="emoji">🠕</button>
+                        <button class="emoji">🠖</button>
+                        <button class="emoji">🠗</button>
+                        <button class="emoji">🠘</button>
+                        <button class="emoji">🠙</button>
+                        <button class="emoji">🠚</button>
+                        <button class="emoji">🠛</button>
+                        <button class="emoji">🠜</button>
+                        <button class="emoji">🠝</button>
+                        <button class="emoji">🠞</button>
+                        <button class="emoji">🠟</button>
+                        <button class="emoji">🠠</button>
+                        <button class="emoji">🠡</button>
+                        <button class="emoji">🠢</button>
+                        <button class="emoji">🠣</button>
+                        <button class="emoji">🠤</button>
+                        <button class="emoji">🠥</button>
+                        <button class="emoji">🠦</button>
+                        <button class="emoji">🠧</button>
+                        <button class="emoji">🠨</button>
+                        <button class="emoji">🠩</button>
+                        <button class="emoji">🠪</button>
+                        <button class="emoji">🠫</button>
+                        <button class="emoji">🠬</button>
+                        <button class="emoji">🠭</button>
+                        <button class="emoji">🠮</button>
+                        <button class="emoji">🠯</button>
+                        <button class="emoji">🠰</button>
+                        <button class="emoji">🠱</button>
+                        <button class="emoji">🠲</button>
+                        <button class="emoji">🠳</button>
+                        <button class="emoji">🠴</button>
+                        <button class="emoji">🠵</button>
+                        <button class="emoji">🠶</button>
+                        <button class="emoji">🠷</button>
+                        <button class="emoji">🠸</button>
+                        <button class="emoji">🠹</button>
+                        <button class="emoji">🠺</button>
+                        <button class="emoji">🠻</button>
+                        <button class="emoji">🠼</button>
+                        <button class="emoji">🠽</button>
+                        <button class="emoji">🠾</button>
+                        <button class="emoji">🠿</button>
+                        <button class="emoji">🡀</button>
+                        <button class="emoji">🡁</button>
+                        <button class="emoji">🡂</button>
+                        <button class="emoji">🡃</button>
+                        <button class="emoji">🡄</button>
+                        <button class="emoji">🡅</button>
+                        <button class="emoji">🡆</button>
+                        <button class="emoji">🡇</button>
+                        <button class="emoji">🡐</button>
+                        <button class="emoji">🡑</button>
+                        <button class="emoji">🡒</button>
+                        <button class="emoji">🡓</button>
+                        <button class="emoji">🡔</button>
+                        <button class="emoji">🡕</button>
+                        <button class="emoji">🡖</button>
+                        <button class="emoji">🡗</button>
+                        <button class="emoji">🡘</button>
+                        <button class="emoji">🡙</button>
+                        <button class="emoji">🡠</button>
+                        <button class="emoji">🡡</button>
+                        <button class="emoji">🡢</button>
+                        <button class="emoji">🡣</button>
+                        <button class="emoji">🡤</button>
+                        <button class="emoji">🡥</button>
+                        <button class="emoji">🡦</button>
+                        <button class="emoji">🡧</button>
+                        <button class="emoji">🡨</button>
+                        <button class="emoji">🡩</button>
+                        <button class="emoji">🡪</button>
+                        <button class="emoji">🡫</button>
+                        <button class="emoji">🡬</button>
+                        <button class="emoji">🡭</button>
+                        <button class="emoji">🡮</button>
+                        <button class="emoji">🡯</button>
+                        <button class="emoji">🡰</button>
+                        <button class="emoji">🡱</button>
+                        <button class="emoji">🡲</button>
+                        <button class="emoji">🡳</button>
+                        <button class="emoji">🡴</button>
+                        <button class="emoji">🡵</button>
+                        <button class="emoji">🡶</button>
+                        <button class="emoji">🡷</button>
+                        <button class="emoji">🡸</button>
+                        <button class="emoji">🡹</button>
+                        <button class="emoji">🡺</button>
+                        <button class="emoji">🡻</button>
+                        <button class="emoji">🡼</button>
+                        <button class="emoji">🡽</button>
+                        <button class="emoji">🡾</button>
+                        <button class="emoji">🡿</button>
+                        <button class="emoji">🢀</button>
+                        <button class="emoji">🢁</button>
+                        <button class="emoji">🢂</button>
+                        <button class="emoji">🢃</button>
+                        <button class="emoji">🢄</button>
+                        <button class="emoji">🢅</button>
+                        <button class="emoji">🢆</button>
+                        <button class="emoji">🢇</button>
+                        <button class="emoji">🢐</button>
+                        <button class="emoji">🢑</button>
+                        <button class="emoji">🢒</button>
+                        <button class="emoji">🢓</button>
+                        <button class="emoji">🢔</button>
+                        <button class="emoji">🢕</button>
+                        <button class="emoji">🢖</button>
+                        <button class="emoji">🢗</button>
+                        <button class="emoji">🢘</button>
+                        <button class="emoji">🢙</button>
+                        <button class="emoji">🢚</button>
+                        <button class="emoji">🢛</button>
+                        <button class="emoji">🢜</button>
+                        <button class="emoji">🢝</button>
+                        <button class="emoji">🢞</button>
+                        <button class="emoji">🢟</button>
+                        <button class="emoji">🢠</button>
+                        <button class="emoji">🢡</button>
+                        <button class="emoji">🢢</button>
+                        <button class="emoji">🢣</button>
+                        <button class="emoji">🢤</button>
+                        <button class="emoji">🢥</button>
+                        <button class="emoji">🢦</button>
+                        <button class="emoji">🢧</button>
+                        <button class="emoji">🢨</button>
+                        <button class="emoji">🢩</button>
+                        <button class="emoji">🢪</button>
+                        <button class="emoji">🢫</button>
+                        <button class="emoji">🢬</button>
+                        <button class="emoji">🢭</button>
+                    </div>
+
+                </div>
+
+
+                <!-- ================= MASSAGE INPUT ================= -->
+                <div class="field">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 12c2.761 0 5-2.239 5-5S14.761 2 12 2 7 4.239 7 7s2.239 5 5 5Zm0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5Z" stroke="currentColor" stroke-width="1.5"></path>
+                    </svg>
+                    <textarea type="text" placeholder="Type a message..." aria-label="message input" id="message-input"></textarea>
+                </div>
+
+
+                <!-- ================= SEND MESSAGE BUTTON ================= -->
+                <button class="btn" id="send-btn" type="button" aria-label="send">Send</button>
+
+            </form>
+
+
+            <!-- ================= APP & DEV INFO ================= -->
+            <div class="display" id="display-info">
+
+                <div class="logo">
+                    <img src="logo.png" alt="">
+                </div>
+
+                <h1>DCYM for Windows</h1>
+                <p>Send and receive messages without keeping your phone online. </p>
+                <p>Use DCYM on all your devices.</p>
+
+                <div class="footer">
+
+                    <p>🔒 End-to-end encrypted</p>
+
+                    <a href="www.youtube.com/@DC_YouTube2001">YouTube</a>
+                    <a href="https://www.facebook.com/profile.php?id=100064306711021">Facebook</a>
+                    <a href="https://github.com/Damex-web">GitHub</a>
+
+                    <p>
+                        <small>created with ❤️ by DCY.  
+                            <mark>V1.0</mark>
+                        </small>
+                    </p>
+
+                </div>
+
+
+                <!-- buy me coffee Script -->
+                <script
+                    type="text/javascript"
+                    src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                    data-name="bmc-button"
+                    data-slug="damexcodeya"
+                    data-color="#9e2162"
+                    data-emoji="☕"
+                    data-font="Cookie"
+                    data-text="Buy me a coffee"
+                    data-outline-color="#000000"
+                    data-font-color="#000000"
+                    data-coffee-color="#ffffff">
+                </script>
+
+            </div>
+
+        </main>
+
+        <!-- ================= USERS PROFILE DISPLAY ================= -->
+        <div id="profile-modal" class="profile-modal">
+
+            <div class="profile-content">
+                <span id="close-profile">&times;</span>
+                <img id="profile-pic-view" src="avatar.png" alt="Profile Picture">
+                <h2 id="profile-username-view"></h2>
+                <p>
+                    <b>Status:</b> 
+                    <span id="profile-status-view"></span>
+                </p>
+                <p>
+                    <b>Phone:</b> 
+                    <span id="profile-phone-view"></span>
+                </p>
+                <p>
+                    <b>About:</b> 
+                    <span id="profile-about-view"></span>
+                </p>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- ================= 🌐 NETWORK ERROR MEDAL ================= -->
+    <div id="network-toast">
+
+        <div class="toast-content">
+            <p id="toast-message">⚠️ Network connection seems weak. Please check and try again.</p>
+            <div class="toast-buttons">
+                <button id="toast-retry-btn">Retry</button>
+                <button id="toast-cancel-btn">Cancel</button>
+            </div>
+            <p id="toast-countdown" class="toast-countdown">Auto-closing in 10 seconds...</p>
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================== WELCOME PAGE ==================== -->
+    <canvas id="matrixBg"></canvas>
+    <div id="crtFilter"></div>
+
+    <div id="welcomeOverlay">
+        <div id="welcomeCard">
+            <div id="pressStart">
+                <div style="font-weight:700;">⊞ DCY Secure Boot -</div>
+                <div class="blink"> Press any key or click to start</div>
+            </div>
+
+            <pre id="welcomeTerminal"></pre>
+
+            <div id="welcomePrompt">
+                <label for="identifyInput" style="color:#9fffbf;">Identify yourself: </label>
+                <input id="identifyInput" placeholder="Type a display name"/>
+                <button id="identifyBtn" class="welcomeBtn"> Continue </button>
+            </div>
+
+            <div id="bootBar">
+                <div id="bootFill"></div>
+            </div>
+
+            <div id="welcomeControls">
+                <div>
+                    <button id="skipWelcome" class="welcomeBtn skipBtn">Skip</button>
+                    <button id="replayWelcome" class="welcomeBtn">Replay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- =============== IMPORT FIREBASE MODULAR SDKs =============== -->
+    <script type="module">
+
+    import { 
+        initializeApp 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import { 
+        getFirestore, 
+        collection, 
+        addDoc, 
+        getDocs,
+        getDoc,
+        query, 
+        where, 
+        updateDoc, 
+        doc, 
+        onSnapshot, 
+        orderBy,
+        limit,
+        deleteDoc,
+        setDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    // ================= ✅ MY FIREBASE CONFIGURATION =================
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDwpTikW3uRc1vYImEnl2h7ZLLtpaI9n2k",
+        authDomain: "dcy-messanger.firebaseapp.com",
+        projectId: "dcy-messanger",
+        storageBucket: "dcy-messanger.appspot.com",
+        messagingSenderId: "1017127204121",
+        appId: "1:1017127204121:web:ffa7a25ca8a88eb62a0188",
+        measurementId: "G-KZN2JSS6XW"
+    };
+
+    // ============== ✅ INITIALIZE FIREBASE ===============
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+    // ========= ✅ EXPOSE FUNCTIONS GLOBALLY SO APP.JS CAN USE THEM =========
+
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.getDoc = getDoc;
+        window.query = query;
+        window.where = where;
+        window.updateDoc = updateDoc;
+        window.doc = doc;
+        window.onSnapshot = onSnapshot;
+        window.orderBy = orderBy;
+        window.limit = limit;
+        window.deleteDoc = deleteDoc;
+        window.setDoc = setDoc;
+
+    </script>
+
+
+
+    <!-- ========= IMPORT APP.JS ========= -->
+    <script src="app.js" type="module"></script>
+
+
+
+
+</body>
+</html>
