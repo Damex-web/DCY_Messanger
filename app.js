@@ -910,7 +910,7 @@ messageInput.addEventListener("keydown", function (e) {
         messageInput.value =
             text.substring(0, cursorPos) + "\n" + text.substring(cursorPos);
         messageInput.selectionStart = messageInput.selectionEnd = cursorPos + 1;
-        return; // stop here for mobile
+        return;
     }
 
     // ==================== NEW LINE WHEN CLICK SHIFT + ENTER ===============
