@@ -354,7 +354,6 @@ function loadProfile(passedUser) {
         profileStatus.textContent = "Offline";
         profileStatus.style.color = "gray";
     }
-    console.log("✅ Profile loaded:", user.username);
 }
 
 // ================= CHANGE PROFILE PICTURE =================
@@ -729,7 +728,6 @@ async function openChat(chatUser){
                     bubble.classList.add("deleted-message");
                     bubble.onclick = null;
                     console.log("deleted for all");
-                    showSaveStatus(" ✅ Message Deleted For both User Successfully", "success");
                 } 
                 else if (msg.deletedFor && msg.deletedFor.includes(loggedInUser.id)) {
                     // --- Deleted only for only me ---
@@ -737,7 +735,6 @@ async function openChat(chatUser){
                     bubble.classList.add("deleted-message");
                     bubble.onclick = null;                    
                     console.log("deleted for only me");
-                    showSaveStatus(" ✅ Message Deleted For Only Me Successfully", "success");
                 } 
                 else {
                     // --- Normal visible message ---
@@ -902,19 +899,23 @@ sendBtn.onclick = async function(){
 };
 
 // ==================== SEND MESSAGES ON ENTER KEY ===============
-messageInput.addEventListener("keydown", function(event){
-    if(event.key === "Enter"){
-        event.preventDefault();
-        sendBtn.click();
-        watchUserList();
-    }
-});
-
-// ==================== NEW LINE WHEN CLICK SHIFT + ENTER ===============
 messageInput.addEventListener("keydown", function (e) {
-    // ✅ SHIFT + ENTER → new line
+    let isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
+    // ================= 📱 MOBILE → Enter should always insert a new line (not send) ==============
+    if (isMobile && e.key === "Enter") {
+        e.preventDefault();
+        let cursorPos = messageInput.selectionStart;
+        let text = messageInput.value;
+        messageInput.value =
+            text.substring(0, cursorPos) + "\n" + text.substring(cursorPos);
+        messageInput.selectionStart = messageInput.selectionEnd = cursorPos + 1;
+        return; // stop here for mobile
+    }
+
+    // ==================== NEW LINE WHEN CLICK SHIFT + ENTER ===============
     if (e.key === "Enter" && e.shiftKey) {
-        e.preventDefault(); // prevent sending
+        e.preventDefault();
         let cursorPos = messageInput.selectionStart;
         let text = messageInput.value;
         messageInput.value =
@@ -922,10 +923,11 @@ messageInput.addEventListener("keydown", function (e) {
         messageInput.selectionStart = messageInput.selectionEnd = cursorPos + 1;
     }
 
-    // // ✅ ENTER (without SHIFT) → send message
-    else if (e.key === "Enter" && !e.shiftKey) {
+    // ================== 💻 DESKTOP: ENTER (without SHIFT) → send message ==================
+    else if (e.key === "Enter") {
         e.preventDefault();
-        sendMessage(); // your send function
+        sendBtn.click();
+        watchUserList();
     }
 });
 
