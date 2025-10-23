@@ -956,7 +956,6 @@ mark {
 @media (max-width: 710px) {
     .chat-cell {
         grid-template-columns: 1fr;
-        height: 92vh;
     }
     .sidebar {
         display: block;
