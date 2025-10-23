@@ -184,7 +184,7 @@ window.login = async function () {
     var password = loginPassword.value.trim();
 
     if (!emailOrUsername || !password) {
-        alert("Please enter your email/username and password.");
+        // alert("Please enter your email/username and password.");
         showSaveStatus(`Please enter your Email and Password. ${field}`, "error");
         return;
     }
@@ -897,6 +897,20 @@ sendBtn.onclick = async function(){
     loadUserList(searchInput.value || "", true);
     watchUserList();
 };
+
+const maxLines = 3;
+const lineHeight = 24; // same as your CSS line-height
+
+messageInput.addEventListener("input", function () {
+    this.style.height = "auto"; // reset height
+    const scrollHeight = this.scrollHeight;
+    const maxHeight = maxLines * lineHeight;
+
+    // Grow smoothly, but stop after 3 lines
+    this.style.height = Math.min(scrollHeight, maxHeight) + "px";
+    this.style.overflowY = scrollHeight > maxHeight ? "auto" : "hidden";
+});
+
 
 // ==================== SEND MESSAGES ON ENTER KEY ===============
 messageInput.addEventListener("keydown", function (e) {
