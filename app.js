@@ -1402,8 +1402,8 @@ window.onload = async function () {
         console.error("⚠ Could not update user status:", error);
         }
 
-        watchUserList();
         showChatCell();
+        watchUserList();
     } else {
         try {
         let snapshot = await getDocs(collection(db, "users"));

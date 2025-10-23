@@ -733,8 +733,8 @@ mark {
 .save-toast {
     position: fixed;
     top: 20px;
-    right: 20%;
-    transform: translateX(50%) translateY(20px);
+    right: 30%;
+    transform: translateX(50%) translateY(30px);
     background: var(--bg);
     color: var(--text);
     padding: 10px 18px;
