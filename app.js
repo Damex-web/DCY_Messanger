@@ -898,11 +898,11 @@ sendBtn.onclick = async function(){
     watchUserList();
 };
 
-const maxLines = 3;
-const lineHeight = 20;
-
 messageInput.addEventListener("input", function () {
-    this.style.height = "auto"; // reset height
+    let maxLines = 3;
+    let lineHeight = 20;
+
+    this.style.height = "auto";
     const scrollHeight = this.scrollHeight;
     const maxHeight = maxLines * lineHeight;
 
