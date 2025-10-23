@@ -899,7 +899,7 @@ sendBtn.onclick = async function(){
 };
 
 const maxLines = 3;
-const lineHeight = 24; // same as your CSS line-height
+const lineHeight = 20;
 
 messageInput.addEventListener("input", function () {
     this.style.height = "auto"; // reset height
