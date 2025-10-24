@@ -1272,8 +1272,9 @@ for(let i = 0; i < emojiButtons.length; i++) {
         terminal.style.display = "block";
     }
 
-    window.login = async function () {
+    window.startFlow = async function () {
         let isMobile = /Mobi|Android/i.test(navigator.userAgent);
+            
         showPressStart();
         blink.textContent = isMobile ? " Tap anywhere to start" : " Press any key or click to start";
 
@@ -1293,6 +1294,7 @@ for(let i = 0; i < emojiButtons.length; i++) {
 
     replayWelcome.onclick = function () {
         localStorage.removeItem("welcomeSeen");
+        terminal.innerHTML = "";
         startFlow();
     };
 
@@ -1486,6 +1488,7 @@ function watchMessages(currentUserId, chatUserId) {
         });
     });
 }
+
 
 
 
