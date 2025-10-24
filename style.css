@@ -235,7 +235,7 @@ h4 {
     margin-block-start: -20px;
 }
 
-#profile-phone, #profile-about {
+#profile-phone, #profile-about, #profile-email {
     color: var(--muted);
     margin-top: -15px;
     padding-left: 8px;
@@ -382,7 +382,7 @@ h4 {
     font-weight: 600;
 }
 
-#profile-status-view, #profile-about-view, #profile-phone-view {
+#profile-status-view, #profile-about-view, #profile-phone-view, #profile-email-view {
     color: var(--muted);
 }
 

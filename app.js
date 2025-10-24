@@ -15,6 +15,7 @@ const loginForm = document.getElementById("login-form");
 
 const profileName = document.getElementById("profile-name");
 const profileStatus = document.getElementById("profile-status");
+const profileEmail = document.getElementById("profile-email");
 const profilePhone = document.getElementById("profile-phone");
 const profileAbout = document.getElementById("profile-about");
 const profilePics = document.getElementById("profile-pics");
@@ -94,13 +95,11 @@ window.saveProfile = async function() {
         let file = fileInput.files[0];
 
         if (!username || !email || !password || !confirmPassword || !phone || !about) {
-            alert("⚠ Fill all fields");
             showSaveStatus(`Please Fill All Field. ${field}`, "error");
             return;
         }
 
         if (password !== confirmPassword) { 
-            alert("⚠ Passwords do not match"); 
             showSaveStatus(`Password do not Match ${field}`, "error");
             return; 
         }
@@ -116,7 +115,6 @@ window.saveProfile = async function() {
         let emailQuery = query(collection(db,"users"), where("email","==",email));
         let emailSnap = await getDocs(emailQuery);
         if (!emailSnap.empty) { 
-            alert("⚠ Email already registered"); 
             showSaveStatus(`Email is Already Registed. ${field}`, "error");
             return; 
         }
@@ -124,7 +122,6 @@ window.saveProfile = async function() {
         let usernameQuery = query(collection(db,"users"), where("username","==",username));
         let usernameSnap = await getDocs(usernameQuery);
         if (!usernameSnap.empty) { 
-            alert("⚠ Username taken");
             showSaveStatus(`Username is Taken. ${field}`, "error");
             return; 
         }
@@ -149,7 +146,6 @@ window.saveProfile = async function() {
                 let docRef = await addDoc(collection(db,"users"), newUser);
                 newUser.id = docRef.id;
                 loggedInUser = newUser;
-                alert("✅ Account created!"); 
                 showSaveStatus("Account Created Successfully ✅", "success");
                 showChatCell();
             };
@@ -158,8 +154,7 @@ window.saveProfile = async function() {
             let docRef = await addDoc(collection(db,"users"), newUser);
             newUser.id = docRef.id;
             loggedInUser = newUser;
-            alert("✅ Account created!"); 
-            showSaveStatus("Account Created Successfully ✅", "success");
+            showSaveStatus(" ✅ Account Created Successfully ", "success");
             showChatCell();
 
             loggedInUser = { id: userRef.id, ...newUserData };
@@ -172,7 +167,7 @@ window.saveProfile = async function() {
         if (error.code === "auth/network-request-failed" || error.message.includes("Could not reach Cloud Firestore")) {
             showNetworkToast();
         } else {
-            alert("❌ " + error.message);
+            showSaveStatus(" ❌ Network Error.", "success");
         }
     }
 };
@@ -184,8 +179,7 @@ window.login = async function () {
     var password = loginPassword.value.trim();
 
     if (!emailOrUsername || !password) {
-        // alert("Please enter your email/username and password.");
-        showSaveStatus(`Please enter your Email and Password. ${field}`, "error");
+        alert("Please enter your email/username and password.");
         return;
     }
 
@@ -222,7 +216,6 @@ window.login = async function () {
 
         if (!user) {
             alert("Invalid credentials. Please check your details.");
-            showSaveStatus(` ⚠ Email or Password is not Correct. ${field}`, "error");
             return;
         }
         // --- ✅ Save user to session ---
@@ -235,27 +228,22 @@ window.login = async function () {
             lastSeen: new Date().toISOString()
         });
 
-        console.log("✅ User logged in:", user.username);
 
 
         // --- ✅ Proceed to chat ---
-        alert("✅ Login successful!");
         showSaveStatus(" ✅ Login Successfully", "success");
 
         // ✅ Load chat screen
         showChatCell();
 
     } catch (error) {
-        // console.error("❌ Login error:", error);
-        // alert("Login failed. Please try again.");
         showSaveStatus(" ❌ Login Failed.", "error");
         showNetworkToast();
         if (
             error.code === "auth/network-request-failed" || error.message.includes("Could not reach Cloud Firestore" || "net::ERR_INTERNET_DISCONNECTED")) {
             showNetworkToast();
         } else {
-            alert("❌ " + error.message);
-            // showSaveStatus(`Login Failed, Please chaeck Your Internet Connection. ${field}`, "error");
+            showSaveStatus(`Login Failed, Please chaeck Your Internet Connection. ${field}`, "error");
         }
     }
 };
@@ -271,22 +259,18 @@ window.logout = async function () {
                 lastSeen: new Date().toISOString()
             });
 
-            console.log(`👤 ${loggedInUser.username} is now offline`);
             loggedInUser = null;
         }
 
         sessionStorage.removeItem("loggedInUser");
         loggedInUser = null;
-        console.log("👋 Logged out successfully");
         showSaveStatus("👋 Logged Out Successfully", "success");
         showLogin();
 
         myProfile.classList.remove("active");
         overlay.classList.remove("active");
     } catch (error) {
-        console.error("❌ Logout error:", error);
         showSaveStatus(` ❌Login Error, Please try Again. ${field}`, "error");
-        // alert("Failed to logout. Please try again.");
     }
 };
 
@@ -325,6 +309,7 @@ function loadProfile(passedUser) {
 
      // 🔹 Update UI with user data
     profileName.textContent = loggedInUser.username;
+    profileEmail.textContent = loggedInUser.email;
     profilePhone.textContent = loggedInUser.phone;
     profileAbout.textContent = loggedInUser.about;
     profilePics.src = loggedInUser.profilePics || "avatar.png";
@@ -380,7 +365,6 @@ function loadProfile(passedUser) {
             // --- 🔹 Show success ---
             showSaveStatus("Profile updated ✅", "success");
 
-            console.log(`✅ ${field} updated successfully`);
         } catch (error) {
             console.error(`❌ Error updating ${field}:`, error);
             showSaveStatus(` ❌Failed to update ${field}`, "error");
@@ -400,7 +384,6 @@ changePics.addEventListener("change", async function () {
     // --- ✅ Ensure we have a valid logged-in user ---
     let user = loggedInUser || JSON.parse(localStorage.getItem("currentUser"));
     if (!user || !(user.id || user.uid)) {
-        alert("No logged-in user found");
         return;
     }
 
@@ -469,7 +452,6 @@ async function loadMessages(senderUsername, receiverUsername, callback) {
 // ================= LOAD USER LIST =================
 async function loadUserList(filter = "") {
     try {
-        console.log("📡 Loading user list...");
 
         if (!loggedInUser) {
             console.warn("⚠ No logged-in user — cannot load user list");
@@ -485,7 +467,6 @@ async function loadUserList(filter = "") {
         list.innerHTML = "";
 
         let usersSnapshot = await getDocs(collection(db, "users"));
-        console.log(`📊 Found ${usersSnapshot.size} users in Firestore`);
 
         if (usersSnapshot.empty) {
             list.innerHTML = "<p>No users found.</p>";
@@ -495,7 +476,6 @@ async function loadUserList(filter = "") {
         // --- Load user list ---
         usersSnapshot.forEach( function (docSnap) {
             let user = { ...docSnap.data(), id: docSnap.id };
-            console.log("👤 User found:", user.username);
 
             // --- Exclude self ---
             if (user.email === loggedInUser.email) return;
@@ -547,10 +527,10 @@ async function loadUserList(filter = "") {
                                 ? lastMsgObj.text.substring(0, 31) + "..."
                                 : lastMsgObj.text;
                     } else {
-                        lastMsg.textContent = "No messages yet";
+                        lastMsg.textContent = "You can Now Chat this User.";
                     }
                 } else {
-                    lastMsg.textContent = "No messages yet";
+                    lastMsg.textContent = "You can Now Chat this User.";
                 }
 
                 let time = document.createElement("div");
@@ -585,9 +565,8 @@ async function loadUserList(filter = "") {
             });
         });
     } catch (error) {
-        console.error("❌ Error loading user list:", error);
         showSaveStatus(`❌ Error Loading UserList. ${field}`, "error");
-        alert("❌ Failed to load user list. Check console.");
+       
     }
 }
 
@@ -629,14 +608,10 @@ async function openChat(chatUser){
                 let userData = userSnap.data();
                 showUserProfile(userData);
             } else {
-                console.warn("⚠ User not found in Firestore");
                 showSaveStatus(` ⚠ User not Found. ${field}`, "error");
-                alert("User not found.");
             }
         } catch (error) {
-            console.error("❌ Error loading profile:", error);
             showSaveStatus(` ❌ Failed to load User Profile. ${field}`, "error");
-            alert("Failed to load user profile.");
         }
     };
 
@@ -727,14 +702,12 @@ async function openChat(chatUser){
                     bubble.textContent = " 🚫 This message was deleted";
                     bubble.classList.add("deleted-message");
                     bubble.onclick = null;
-                    console.log("deleted for all");
                 } 
                 else if (msg.deletedFor && msg.deletedFor.includes(loggedInUser.id)) {
                     // --- Deleted only for only me ---
                     bubble.textContent = " 🚫 This message was deleted";
                     bubble.classList.add("deleted-message");
                     bubble.onclick = null;                    
-                    console.log("deleted for only me");
                 } 
                 else {
                     // --- Normal visible message ---
@@ -790,9 +763,7 @@ async function openChat(chatUser){
                             loadUserList(searchInput.value || "", true);
 
                         } catch (error) {
-                            console.error("❌ Error deleting message:", error);
                             showSaveStatus(` ❌ Failed to delete message. please check your internet connection. ${field}`, "error");
-                            alert("Failed to delete message. Please check your network connection.");
                         }
                     }
                 };
@@ -832,7 +803,6 @@ window.deleteMessage = async function (messageId, currentUserId, receiverId) {
                 deleted: true,
                 deletedAt: new Date().toISOString()
             });
-            console.log("✅ Message deleted globally:", messageId);
 
             // -- 🔹 Check if this was the last message between users --
             let chatRef = doc(db, "chats", msgData.chatId);
@@ -844,7 +814,6 @@ window.deleteMessage = async function (messageId, currentUserId, receiverId) {
                     await updateDoc(chatRef, {
                         lastMsgText: "🚫 This message was deleted"
                     });
-                    console.log("🟢 Updated last message preview to deleted");
                 }
             }
 
@@ -857,7 +826,6 @@ window.deleteMessage = async function (messageId, currentUserId, receiverId) {
             }
 
             await updateDoc(msgRef, { deletedFor });
-            console.log("✅ Message deleted for current user only:", messageId);
 
             let chatRef = doc(db, "chats", msgData.chatId);
             let chatSnap = await getDoc(chatRef);
@@ -868,15 +836,12 @@ window.deleteMessage = async function (messageId, currentUserId, receiverId) {
                     await updateDoc(chatRef, {
                         lastMsgText: "🚫 This message was deleted"
                     });
-                    console.log("🟢 Updated last message preview to deleted");
                 }
             }
         }
 
     } catch (error) {
-        console.error("❌ Failed to delete message:", error);
         showSaveStatus(`Failed to delete message. Please check your internet connection ${field}`, "error");
-        alert("Failed to delete message. Please check your network connection.");
     }
 };
 
@@ -982,9 +947,10 @@ document.addEventListener("keydown", function(event) {
 // ================= SHOW USERS PROFILE FUNCTIONS =================
 function showUserProfile(user) {
     profilePicsView.src = user.profilePics && user.profilePics !== "" ? user.profilePics : "avatar.png";
-    profileUserView.textContent = user.username || "Unknown User";
-    profileAboutView.textContent = user.about || "No bio yet";
-    profilePhoneView.textContent = user.phone || "Not provided";
+    profileUserView.textContent = user.username;
+    profileAboutView.textContent = user.about;
+    profilePhoneView.textContent = user.phone;
+    profileEmailView.textContent = user.email;
 
      // --- Online / Last seen status ---
     if (user.isOnline) {
@@ -1054,7 +1020,6 @@ function showNetworkToast() {
     retryBtn.onclick = function () {
         closeToast();
         if (!navigator.onLine) {
-            // alert("⚠️ Still offline. Please reconnect to the internet.");
             showSaveStatus(` ⚠ Still offline. please reconnect to the internet. ${field}`, "error");
         }
     };
@@ -1195,10 +1160,9 @@ for(let i = 0; i < emojiButtons.length; i++) {
         utter.rate = 0.95;
         utter.pitch = 1;
 
-        // 🔹 When voice finishes, stop the Matrix rain
+        // --- 🔹 When voice finishes, stop the Matrix rain ---
         utter.onend = function () {
-            console.log("🎤 Voice finished — stopping Matrix rain");
-            clearInterval(matrixInterval); // ✅ stop the rain
+            clearInterval(matrixInterval);
         };
 
         speechSynthesis.cancel();
@@ -1283,7 +1247,6 @@ for(let i = 0; i < emojiButtons.length; i++) {
                     localStorage.setItem("welcomeSeen", "true"); 
                     matrixCanvas.style.display = "none"; // ✅ hide rain
                     welcomeOverlay.style.display = "none"; // ✅ hide overlay
-                    console.log("✅ Boot finished, signup form ready");
 
                     showSignup();
                 }
@@ -1355,8 +1318,7 @@ for(let i = 0; i < emojiButtons.length; i++) {
         } else {
             console.warn("⚠️ showSignup() not found. Make sure it’s defined globally.");
         }
-
-        console.log("⏭️ Welcome skipped → Signup form opened");
+        showSaveStatus(" ✅ Welcome Back.", "success");
     };
 
 
@@ -1388,7 +1350,6 @@ window.onclick = function(event) {
 window.onload = async function () {
     // 🟢 Skip welcome if already seen
     if (localStorage.getItem("welcomeSeen")) {
-        console.log("Welcome already seen — skipping boot.");
 
         welcomeOverlay.style.display = "none";
         matrixCanvas.style.display = "none";        
@@ -1414,9 +1375,8 @@ window.onload = async function () {
             isOnline: true,
             lastSeen: new Date().toISOString()
         });
-        console.log("🟢 User online after refresh:", loggedInUser.username);
         } catch (error) {
-        console.error("⚠ Could not update user status:", error);
+        showSaveStatus(" ⚠ Could not update user status", "error");
         }
 
         showChatCell();
@@ -1426,18 +1386,15 @@ window.onload = async function () {
         let snapshot = await getDocs(collection(db, "users"));
 
         if (snapshot.empty) {
-            console.log("📝 No users found → showing signup form");
 
             showSignup();
         } else {
-            console.log("🔑 Users exist → showing login form");
             showSaveStatus(` Welcome Back.  Please Login ${field}`, "succes");
             showLogin();
         }
 
         watchUserList();
         } catch (error) {
-        console.error("⚠ Could not check user list:", error);
 
         showLogin();
         }
@@ -1453,7 +1410,6 @@ window.addEventListener("online", async function () {
             isOnline: true,
             lastSeen: new Date().toISOString()
         });
-        console.log("✅ Reconnected — user marked online");
     }
 });
 
@@ -1526,7 +1482,6 @@ function watchMessages(currentUserId, chatUserId) {
                 return;
             bubble.classList.add("deleted-message");
             bubble.onclick = null;
-            console.log("✅ Message hidden for current user only:", messageId)
             messages.push(msg);
         });
     });
@@ -1534,35 +1489,3 @@ function watchMessages(currentUserId, chatUserId) {
 
 
 
-
-
-
-
-
-
-
-
-
-// show all resgistered user in console  remove
-window.showAllUsers = async function () {
-    try {
-        let querySnapshot = await getDocs(collection(db, "users"));
-
-        if (querySnapshot.empty) {
-        console.log("⚠ No users found in Firestore.");
-        return;
-        }
-
-        console.log("📋 Registered Users:");
-        querySnapshot.forEach(function (docSnap) {
-        console.log({
-            id: docSnap.id,  
-            ...docSnap.data()    
-        });
-        });
-
-    } catch (error) {
-        console.error("❌ Error fetching users:", error);
-    }
-};
-showAllUsers();

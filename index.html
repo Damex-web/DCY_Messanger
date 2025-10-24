@@ -200,6 +200,11 @@
                         <p id="profile-phone" contenteditable="true"></p>
                     </div>
 
+                    <div class="profile-email">
+                        <p class="p">Email</p>
+                        <p id="profile-email"></p>
+                    </div>
+
                     <div class="logout">
                         <button class="danger" id="logout-btn" onclick="logout()">Log Out</button>
                         <small>Chat history on this computer will be cleared when you log out.</small>
@@ -1189,21 +1194,32 @@
         <div id="profile-modal" class="profile-modal">
 
             <div class="profile-content">
+
                 <span id="close-profile">&times;</span>
                 <img id="profile-pic-view" src="avatar.png" alt="Profile Picture">
                 <h2 id="profile-username-view"></h2>
+
                 <p>
-                    <b>Status:</b> 
-                    <span id="profile-status-view"></span>
+                    <b>Status: 
+                        <span id="profile-status-view"></span>
+                    </b>
                 </p>
                 <p>
-                    <b>Phone:</b> 
-                    <span id="profile-phone-view"></span>
+                    <b>Phone:
+                        <span id="profile-phone-view"></span>
+                    </b>
                 </p>
                 <p>
-                    <b>About:</b> 
-                    <span id="profile-about-view"></span>
+                    <b>About:
+                        <span id="profile-about-view"></span>
+                    </b>
                 </p>
+                <p>
+                    <b>Email: 
+                        <span id="profile-email-view"></span>
+                    </b>
+                </p>
+                
             </div>
             
         </div>
