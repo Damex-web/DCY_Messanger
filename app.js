@@ -915,7 +915,7 @@ messageInput.addEventListener("input", function () {
 
 // ==================== SEND MESSAGES ON ENTER KEY ===============
 messageInput.addEventListener("keydown", function (e) {
-    let isMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+    let isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
     // ================= 📱 MOBILE → Enter should always insert a new line (not send) ==============
     if (isMobile && e.key === "Enter") {
