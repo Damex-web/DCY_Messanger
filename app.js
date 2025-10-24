@@ -898,15 +898,16 @@ sendBtn.onclick = async function(){
     watchUserList();
 };
 
+// ======== Grow smoothly, but stop after 3 lines =======
 messageInput.addEventListener("input", function () {
     let maxLines = 3;
     let lineHeight = 20;
 
     this.style.height = "auto";
-    const scrollHeight = this.scrollHeight;
-    const maxHeight = maxLines * lineHeight;
+    let scrollHeight = this.scrollHeight;
+    let maxHeight = maxLines * lineHeight;
 
-    // Grow smoothly, but stop after 3 lines
+    
     this.style.height = Math.min(scrollHeight, maxHeight) + "px";
     this.style.overflowY = scrollHeight > maxHeight ? "auto" : "hidden";
 });
