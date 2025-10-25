@@ -241,6 +241,12 @@ h4 {
     padding-left: 8px;
 }
 
+#profile-about {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    max-height: 55px;
+}
+
 #my-profile.active, #overlay.active {
     display: block;
 }
@@ -1023,4 +1029,5 @@ mark {
     }
 }
 /* responsive style end */
+
 
