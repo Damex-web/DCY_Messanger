@@ -7,6 +7,8 @@ Designed for **speed, simplicity, and privacy** — all inside a clean, responsi
 
 ---
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-DCY%20Messenger-blue?style=for-the-badge)](https://dcym.netlify.app)
+
 ## 🚀 Features
 
 - 🔐 **Secure Authentication** — Firebase Authentication for signup/login  
@@ -36,3 +38,6 @@ Designed for **speed, simplicity, and privacy** — all inside a clean, responsi
    ```bash
    git clone https://github.com/Damex-web/DCY-Messenger.git
    cd DCY-Messenger
+
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-DCY%20Messenger-blue?style=for-the-badge)](https://dcym.netlify.app)
