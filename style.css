@@ -62,7 +62,6 @@ body {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     width: 80%;
-    border: 1px solid #9e2162;
     display: none;
     align-items: center;
 }
@@ -1029,5 +1028,6 @@ mark {
     }
 }
 /* responsive style end */
+
 
 
